@@ -1,0 +1,49 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+body {
+  color: #1f1e1e;
+  font-family: "Cairo", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#root {
+  align-items: center;
+  background-color: black;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+#timer-label {
+  width: 30rem;
+  margin: 0 auto;
+  background-color: aliceblue;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#time-left {
+  width: 25rem;
+  height: 5rem;
+  border: 2px solid black;
+}
+
+/*# sourceMappingURL=index.css.map */
