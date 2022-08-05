@@ -10,19 +10,13 @@ class Break extends React.Component {
       <div id="break-controls">
         <div id="break-label">Break Length</div>
         <div>
-          <i
-            className="fa fa-arrow-down"
-            id="break-decrement"
-            aria-hidden="true"
-            onClick={this.props.handler}
-          ></i>
+          <div id="break-decrement" onClick={this.props.handler}>
+            <i className="fa fa-arrow-down" aria-hidden="true"></i>
+          </div>
           <div id="break-length"> {this.props.value} </div>
-          <i
-            className="fa fa-arrow-up"
-            id="break-increment"
-            aria-hidden="true"
-            onClick={this.props.handler}
-          ></i>
+          <div id="break-increment" onClick={this.props.handler}>
+            <i className="fa fa-arrow-up" aria-hidden="true"></i>
+          </div>
         </div>
       </div>
     );

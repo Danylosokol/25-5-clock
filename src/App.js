@@ -1,10 +1,11 @@
+
 import React from "react";
 import "./index.css";
-import Session from './Session';
-import Break from './Break';
+import Session from "./Session";
+import Break from "./Break";
 
 class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -19,23 +20,25 @@ class App extends React.Component {
         sec: 0,
       },
       countdown: null,
-      part: "Session"
+      part: "Session",
     };
 
     this.handleRestart = this.handleRestart.bind(this);
     this.handleStartStop = this.handleStartStop.bind(this);
     this.handleIncrDecr = this.handleIncrDecr.bind(this);
     this.handleCountDown = this.handleCountDown.bind(this);
+
+    this.audioBeep = React.createRef();
   }
 
-  handleStartStop(){
+  handleStartStop() {
     console.log("start-stop");
-    if(this.state.countdown !== null){
+    if (this.state.countdown !== null) {
       clearInterval(this.state.countdown);
       this.setState({
         countdown: null,
       });
-    }else{
+    } else {
       if (this.state.part === "Session") {
         this.handleCountDown(this.state.session.min, this.state.session.sec);
       } else {
@@ -44,13 +47,13 @@ class App extends React.Component {
     }
   }
 
-  handleCountDown(min, sec){
+  handleCountDown(min, sec) {
     const finish = new Date(
       new Date().getTime() + min * 60000 + sec * 1000 + 1000
     ).getTime();
     let x = setInterval(() => {
       let distance = finish - new Date().getTime();
-      if(this.state.part === "Session"){
+      if (this.state.part === "Session") {
         this.setState((state) => ({
           session: {
             min:
@@ -60,7 +63,7 @@ class App extends React.Component {
             sec: Math.floor((distance % 60000) / 1000),
           },
         }));
-      }else{
+      } else {
         this.setState((state) => ({
           break: {
             min:
@@ -68,12 +71,11 @@ class App extends React.Component {
                 ? Math.floor((distance % 3600000) / 60000)
                 : state.break.min,
             sec: Math.floor((distance % 60000) / 1000),
-          }
+          },
         }));
       }
       if (distance < 0) {
         clearInterval(this.state.countdown);
-        console.log(this.state.part);
         if (this.state.part === "Session") {
           this.setState((state) => ({
             session: {
@@ -102,7 +104,10 @@ class App extends React.Component {
     });
   }
 
-  handleRestart(){
+  handleRestart() {
+    const beep = document.getElementById("beep");
+    beep.pause();
+    beep.currentTime = 0;
     console.log("restart");
     clearInterval(this.state.countdown);
     this.setState({
@@ -121,75 +126,69 @@ class App extends React.Component {
     });
   }
 
-  handleIncrDecr(event){
+  handleIncrDecr(event) {
     switch (event.currentTarget.id) {
       case "break-increment":
         // if(this.state.breakSetted < 60){
-          console.log("Break+ :" + this.state.breakSetted);
-          this.setState((state) => ({
-            breakSetted:
+        console.log("Break+ :" + this.state.breakSetted);
+        this.setState((state) => ({
+          breakSetted:
+            state.breakSetted < 60 ? state.breakSetted + 1 : state.breakSetted,
+          break: {
+            min:
               state.breakSetted < 60
                 ? state.breakSetted + 1
                 : state.breakSetted,
-            break: {
-              min:
-                state.breakSetted < 60
-                  ? state.breakSetted + 1
-                  : state.breakSetted,
-              sec: 0,
-            },
-          }));
+            sec: 0,
+          },
+        }));
         // }
         break;
       case "break-decrement":
         // if(this.state.breakSetted > 1){
-          console.log("Break- :" + this.state.breakSetted);
-          this.setState((state) => ({
-            breakSetted:
-              state.breakSetted > 1
-                ? state.breakSetted - 1
-                : state.breakSetted,
-            break: {
-              min:
-                state.breakSetted > 1
-                  ? state.breakSetted - 1
-                  : state.breakSetted,
-              sec: 0,
-            },
-          }));
+        console.log("Break- :" + this.state.breakSetted);
+        this.setState((state) => ({
+          breakSetted:
+            state.breakSetted > 1 ? state.breakSetted - 1 : state.breakSetted,
+          break: {
+            min:
+              state.breakSetted > 1 ? state.breakSetted - 1 : state.breakSetted,
+            sec: 0,
+          },
+        }));
         // }
         break;
       case "session-increment":
-          console.log("Session+ :" + this.state.sessionSetted);
-          this.setState((state) => ({
-            sessionSetted:
+        console.log("Session+ :" + this.state.sessionSetted);
+        this.setState((state) => ({
+          sessionSetted:
+            state.sessionSetted < 60
+              ? state.sessionSetted + 1
+              : state.sessionSetted,
+          session: {
+            min:
               state.sessionSetted < 60
                 ? state.sessionSetted + 1
                 : state.sessionSetted,
-            session: {
-              min:
-                state.sessionSetted < 60
-                  ? state.sessionSetted + 1
-                  : state.sessionSetted,
-              sec: 0,
-            },
-          }));
+            sec: 0,
+          },
+        }));
         break;
       case "session-decrement":
-          console.log("Session- :" + this.state.sessionSetted);
-          this.setState((state) => ({
-            sessionSetted:
+        console.log("Session- :" + this.state.sessionSetted);
+        this.setState((state) => ({
+          sessionSetted:
+            state.sessionSetted > 1
+              ? state.sessionSetted - 1
+              : state.sessionSetted,
+          session: {
+            min:
               state.sessionSetted > 1
                 ? state.sessionSetted - 1
                 : state.sessionSetted,
-            session: {
-              min:
-                state.sessionSetted > 1
-                  ? state.sessionSetted - 1
-                  : state.sessionSetted,
-              sec: 0,
-            },
-          }));
+            sec: 0,
+          },
+        }));
         break;
     }
   }
@@ -197,34 +196,47 @@ class App extends React.Component {
   render() {
     let min = 0;
     let sec = 0;
-    if(this.state.part === "Session"){
-      min = this.state.session.min < 10
-              ? "0" + this.state.session.min
-              : this.state.session.min;
-      sec = this.state.session.sec < 10
-              ? "0" + this.state.session.sec
-              : this.state.session.sec;
-    }else{
-      min = this.state.break.min < 10
-              ? "0" + this.state.break.min
-              : this.state.break.min;
-      sec = this.state.break.sec < 10
-              ? "0" + this.state.break.sec
-              : this.state.break.sec;
+    if (this.state.part === "Session") {
+      min =
+        this.state.session.min < 10
+          ? "0" + this.state.session.min
+          : this.state.session.min;
+      sec =
+        this.state.session.sec < 10
+          ? "0" + this.state.session.sec
+          : this.state.session.sec;
+    } else {
+      min =
+        this.state.break.min < 10
+          ? "0" + this.state.break.min
+          : this.state.break.min;
+      sec =
+        this.state.break.sec < 10
+          ? "0" + this.state.break.sec
+          : this.state.break.sec;
+    }
+    if(min === "00" && sec === "00"){
+      this.audioBeep.current.play();
     }
     return (
       <div>
         <div id="controls">
-          <Break handler={this.handleIncrDecr} value={this.state.breakSetted}></Break>
-          <Session handler={this.handleIncrDecr} value={this.state.sessionSetted}></Session>
+          <Break
+            handler={this.handleIncrDecr}
+            value={this.state.breakSetted}
+          ></Break>
+          <Session
+            handler={this.handleIncrDecr}
+            value={this.state.sessionSetted}
+          ></Session>
         </div>
         <div id="timer-body">
-          <div id="timer-label">
-            {this.state.part}
-          </div>
+          <div id="timer-label">{this.state.part}</div>
+
           <div id="time-left">
             {min}:{sec}
           </div>
+
           <div id="start_stop" onClick={this.handleStartStop}>
             <i className="fa fa-play" aria-hidden="true"></i>
             <i className="fa fa-stop" aria-hidden="true"></i>
@@ -232,6 +244,8 @@ class App extends React.Component {
           <div id="reset" onClick={this.handleRestart}>
             <i className="fa fa-repeat" aria-hidden="true"></i>
           </div>
+
+          <audio ref={this.audioBeep} src="./beep.mp3" id="beep"></audio>
         </div>
       </div>
     );
