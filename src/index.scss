@@ -29,7 +29,7 @@ a {
   width: 100vw;
 }
 
-#timer-label{
+#timer-body{
   width: 30rem;
   margin: 0 auto;
   background-color: aliceblue;
@@ -44,4 +44,25 @@ a {
   width: 25rem;
   height: 5rem;
   border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#controls{
+  display: flex;
+  justify-content: space-between;
+}
+
+#break-controls,
+#session-controls{
+  background-color:aliceblue; 
+  width: 10rem;
+}
+
+#break-controls > div,
+#session-controls > div{
+  display: flex;
+  justify-content: space-around;
+  padding: .5rem 0;
 }
