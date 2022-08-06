@@ -219,8 +219,9 @@ class App extends React.Component {
       this.audioBeep.current.play();
     }
     return (
-      <div>
-        <div id="controls">
+      <div id="timer">
+      
+        <div id="duration-controls">
           <Break
             handler={this.handleIncrDecr}
             value={this.state.breakSetted}
@@ -230,6 +231,7 @@ class App extends React.Component {
             value={this.state.sessionSetted}
           ></Session>
         </div>
+
         <div id="timer-body">
           <div id="timer-label">{this.state.part}</div>
 
@@ -237,12 +239,14 @@ class App extends React.Component {
             {min}:{sec}
           </div>
 
-          <div id="start_stop" onClick={this.handleStartStop}>
-            <i className="fa fa-play" aria-hidden="true"></i>
-            <i className="fa fa-stop" aria-hidden="true"></i>
-          </div>
-          <div id="reset" onClick={this.handleRestart}>
-            <i className="fa fa-repeat" aria-hidden="true"></i>
+          <div id="flow-controls">
+            <div id="start_stop" onClick={this.handleStartStop}>
+              <i className="fa fa-play" aria-hidden="true"></i>
+              <i className="fa fa-stop" aria-hidden="true"></i>
+            </div>
+            <div id="reset" onClick={this.handleRestart}>
+              <i className="fa fa-repeat" aria-hidden="true"></i>
+            </div>
           </div>
 
           <audio ref={this.audioBeep} src="./beep.mp3" id="beep"></audio>
